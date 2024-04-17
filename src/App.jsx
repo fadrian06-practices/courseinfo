@@ -1,33 +1,40 @@
-const Header = props => {
-  return <h1>{props.course}</h1>
+const Header = ({ course }) => {
+  return <h1>{course}</h1>
 }
 
-const Part = props => {
+const Part = ({ part: { name, exercises } }) => {
   return (
     <p>
-      {props.part.name} {props.part.exercises}
+      {name} {exercises}
     </p>
   )
 }
 
-const Content = props => {
+const Content = ({ parts }) => {
   return (
     <div>
-      <Part part={props.parts[0]} />
-      <Part part={props.parts[1]} />
-      <Part part={props.parts[2]} />
+      {parts.map(part => (
+        <Part key={part.name} part={part} />
+      ))}
     </div>
   )
 }
 
-const Total = props => {
+const Total = ({ parts }) => {
   return (
     <p>
-      Number of exercises{' '}
-      {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}
+      Number of exercises {parts[0].exercises + parts[1].exercises + parts[2].exercises}
     </p>
   )
 }
+
+const Course = ({ course }) => (
+  <div>
+    <Header course={course.name} />
+    <Content parts={course.parts} />
+    {/*<Total parts={course.parts} />*/}
+  </div>
+)
 
 const App = () => {
   const course = {
@@ -48,13 +55,7 @@ const App = () => {
     ]
   }
 
-  return (
-    <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
-  )
+  return <Course course={course} />
 }
 
 export default App
